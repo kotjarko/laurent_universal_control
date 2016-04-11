@@ -10,12 +10,13 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
+using System.Net;
 
 namespace Laurent_control_app
 {
     public partial class Form1 : Form
     {
-        private Connection laurent1;
+        //private Connection laurent1;
         private Telnet.TelnetClient client1 = new Telnet.TelnetClient();
         public Form1()
         {
@@ -25,23 +26,32 @@ namespace Laurent_control_app
 
         private void button1_Click(object sender, EventArgs e)
         {
+            byte[] ip1 = new byte[4] {192,168,0,101};
+
+
+            client1.Connect(ip1, 2424);
+            client1.Send("$KE,WR,1,0");
+            /*
             laurent1 = new Connection("192.168.0.101", 2424);
             if (laurent1.connect())
             {
                 laurent1.send("$KE\r\n");
                 label1.Text += laurent1.read();
-            }
+            }*/
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            client1.Disconnect();
+            /*
             if (laurent1.connect())
             {
                 label1.Text += laurent1.read();
             }
+            */
         }
     }
-
+    /*
     public class Connection
     {
         private int port;
@@ -82,5 +92,5 @@ namespace Laurent_control_app
             if (!is_connected) return "";
             return reader.ReadString();
         }
-    }
+    }*/
 }

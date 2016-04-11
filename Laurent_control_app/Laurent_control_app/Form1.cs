@@ -16,5 +16,10 @@ namespace Laurent_control_app
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

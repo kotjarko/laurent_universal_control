@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="LaurentTCP.cs" />
     <Compile Include="TelnetConnection.cs" />
-    <Compile Include="DataReceivedEventArgs.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

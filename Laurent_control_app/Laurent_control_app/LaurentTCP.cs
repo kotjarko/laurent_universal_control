@@ -11,14 +11,16 @@ namespace Laurent_control_app
         private TelnetConnection tc;
 
         public bool connected = false;
-
+        // -1 неизвестно
+        // 1 высокий\включено
+        // 0 низкий\выключено
         public short[] laurent_relay = { -1, -1, -1, -1 };
         public short[] laurent_out = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
         public short[] laurent_in = { -1, -1, -1, -1, -1, -1 };
 
         public LaurentTCP()
         {
-
+            // TODO construct
         }
 
         public bool connect(string host, int port)

@@ -19,6 +19,12 @@ namespace Laurent_control_app
         private LaurentTCP controller_1;
         private LaurentTCP controller_2;
 
+        Status_Check check_1;
+        Status_Check check_2;
+
+        Thread thread_check_1;
+        Thread thread_check_2;
+
         public Form1()
         {
             InitializeComponent();
@@ -29,19 +35,31 @@ namespace Laurent_control_app
         private void button1_Click(object sender, EventArgs e)
         {
             if (!controller_1.connected) controller_1.connect("192.168.0.101", 2424);
-            // if (!controller_2.connected) controller_2.connect("192.168.0.102", 2424); // TODO
+            check_1 = new Status_Check();
+            thread_check_1 = new Thread(check_1.DoWork);
+            thread_check_1.Start();
+            /* if (!controller_2.connected) controller_2.connect("192.168.0.102", 2424); // TODO
+            workerObject = new Class1();
+            workerThread = new Thread(workerObject.DoWork);
+            workerThread.Start();
+            */
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private async void timer1_Tick(object sender, EventArgs e)
         {
             // Кнопка связи
             if (controller_1.connected && controller_2.connected) btn_connect.Enabled = false;
             else btn_connect.Enabled = true;
+            // Запрос изменения состояния
+            if (controller_1.connected) controller_1.request_changes();
+            if (controller_2.connected) controller_2.request_changes();
             // Связь с 1 контроллером
-            if (controller_1.connected)
+            if (controller_1.alive)
             {
                 lbl_controller1_connected.Text = "Есть связь";
                 lbl_controller1_connected.ForeColor = Color.Green;
+
+               // controller_1.request_changes();
             }
             else
             {
@@ -50,10 +68,12 @@ namespace Laurent_control_app
             }
 
             // Связь со 2 контроллером
-            if (controller_2.connected)
+            if (controller_2.alive)
             {
                 lbl_controller2_connected.Text = "Есть связь";
                 lbl_controller2_connected.ForeColor = Color.Green;
+
+                // controller_2.request_changes();
             }
             else
             {
@@ -138,5 +158,81 @@ namespace Laurent_control_app
                     break;
             }
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            int val = check_1.get_arr(1);
+            button1.Text = val.ToString();
+        }
+
+        private void on_btn_out_click(int controller, int num)
+        {
+            // if (controller_1.alive)
+        }
+
+        private void out_1_1_Click(object sender, EventArgs e)
+        {
+            on_btn_out_click(1, 1);
+        }
+
+        private void on_btn_out_click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                short pin = short.Parse(button.Name.Split('_')[2]);
+                short state = 0;
+
+                if (button.Name.Split('_')[1] == "1")
+                {
+                    if (controller_1.laurent_out[pin] == 0) state = 1;
+                    controller_1.set_output(pin, state);
+                }
+                else if (button.Name.Split('_')[1] == "1")
+                {
+                    if (controller_1.laurent_out[pin] == 0) state = 1;
+                    controller_1.set_output(pin, state);
+                }
+                // TODO else error
+            }
+        }
+    }
+
+    public class Status_Check
+    {
+        public void DoWork()
+        {
+            while (!_shouldStop)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Random rnd = new Random();
+                    arr[i] = rnd.Next(0, 9);
+                }
+            }
+            arr[0] = -1;
+            arr[1] = -1;
+            arr[2] = -1;
+            arr[3] = -1;
+            arr[4] = -1;
+            arr[5] = -1;
+            arr[6] = -1;
+            arr[7] = -1;
+            arr[8] = -1;
+            arr[9] = -1;
+        }
+
+        public void RequestStop()
+        {
+            _shouldStop = true;
+        }
+
+        public int get_arr(int num)
+        {
+            return arr[num];
+        }
+
+        private volatile bool _shouldStop;
+        private volatile int[] arr = new int[10];
     }
 }

@@ -82,22 +82,23 @@
             this.label8 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.in_1_6 = new System.Windows.Forms.Button();
+            this.in_1_5 = new System.Windows.Forms.Button();
             this.in_1_4 = new System.Windows.Forms.Button();
             this.in_1_2 = new System.Windows.Forms.Button();
             this.in_1_3 = new System.Windows.Forms.Button();
             this.in_1_1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.panel10 = new System.Windows.Forms.Panel();
+            this.in_2_6 = new System.Windows.Forms.Button();
+            this.in_2_5 = new System.Windows.Forms.Button();
             this.in_2_4 = new System.Windows.Forms.Button();
             this.in_2_2 = new System.Windows.Forms.Button();
             this.in_2_3 = new System.Windows.Forms.Button();
             this.in_2_1 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.in_1_6 = new System.Windows.Forms.Button();
-            this.in_1_5 = new System.Windows.Forms.Button();
-            this.in_2_6 = new System.Windows.Forms.Button();
-            this.in_2_5 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -132,7 +133,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 200;
+            this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // lbl_controller1_connected
@@ -357,6 +358,7 @@
             this.out_2_12.TabIndex = 22;
             this.out_2_12.Text = "---";
             this.out_2_12.UseVisualStyleBackColor = true;
+            this.out_2_12.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_10
             // 
@@ -366,6 +368,7 @@
             this.out_2_10.TabIndex = 21;
             this.out_2_10.Text = "---";
             this.out_2_10.UseVisualStyleBackColor = true;
+            this.out_2_10.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_11
             // 
@@ -375,6 +378,7 @@
             this.out_2_11.TabIndex = 20;
             this.out_2_11.Text = "---";
             this.out_2_11.UseVisualStyleBackColor = true;
+            this.out_2_11.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_9
             // 
@@ -384,6 +388,7 @@
             this.out_2_9.TabIndex = 19;
             this.out_2_9.Text = "---";
             this.out_2_9.UseVisualStyleBackColor = true;
+            this.out_2_9.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_8
             // 
@@ -393,6 +398,7 @@
             this.out_2_8.TabIndex = 18;
             this.out_2_8.Text = "---";
             this.out_2_8.UseVisualStyleBackColor = true;
+            this.out_2_8.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_6
             // 
@@ -402,6 +408,7 @@
             this.out_2_6.TabIndex = 17;
             this.out_2_6.Text = "---";
             this.out_2_6.UseVisualStyleBackColor = true;
+            this.out_2_6.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_7
             // 
@@ -411,6 +418,7 @@
             this.out_2_7.TabIndex = 16;
             this.out_2_7.Text = "---";
             this.out_2_7.UseVisualStyleBackColor = true;
+            this.out_2_7.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_5
             // 
@@ -420,6 +428,7 @@
             this.out_2_5.TabIndex = 15;
             this.out_2_5.Text = "---";
             this.out_2_5.UseVisualStyleBackColor = true;
+            this.out_2_5.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_4
             // 
@@ -429,6 +438,7 @@
             this.out_2_4.TabIndex = 14;
             this.out_2_4.Text = "---";
             this.out_2_4.UseVisualStyleBackColor = true;
+            this.out_2_4.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_2
             // 
@@ -438,6 +448,7 @@
             this.out_2_2.TabIndex = 13;
             this.out_2_2.Text = "---";
             this.out_2_2.UseVisualStyleBackColor = true;
+            this.out_2_2.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_3
             // 
@@ -447,6 +458,7 @@
             this.out_2_3.TabIndex = 12;
             this.out_2_3.Text = "---";
             this.out_2_3.UseVisualStyleBackColor = true;
+            this.out_2_3.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_2_1
             // 
@@ -456,6 +468,7 @@
             this.out_2_1.TabIndex = 11;
             this.out_2_1.Text = "---";
             this.out_2_1.UseVisualStyleBackColor = true;
+            this.out_2_1.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // label7
             // 
@@ -496,6 +509,7 @@
             this.out_1_12.TabIndex = 22;
             this.out_1_12.Text = "---";
             this.out_1_12.UseVisualStyleBackColor = true;
+            this.out_1_12.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_10
             // 
@@ -505,6 +519,7 @@
             this.out_1_10.TabIndex = 21;
             this.out_1_10.Text = "---";
             this.out_1_10.UseVisualStyleBackColor = true;
+            this.out_1_10.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_11
             // 
@@ -514,6 +529,7 @@
             this.out_1_11.TabIndex = 20;
             this.out_1_11.Text = "---";
             this.out_1_11.UseVisualStyleBackColor = true;
+            this.out_1_11.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_9
             // 
@@ -523,6 +539,7 @@
             this.out_1_9.TabIndex = 19;
             this.out_1_9.Text = "---";
             this.out_1_9.UseVisualStyleBackColor = true;
+            this.out_1_9.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_8
             // 
@@ -532,6 +549,7 @@
             this.out_1_8.TabIndex = 18;
             this.out_1_8.Text = "---";
             this.out_1_8.UseVisualStyleBackColor = true;
+            this.out_1_8.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_6
             // 
@@ -541,6 +559,7 @@
             this.out_1_6.TabIndex = 17;
             this.out_1_6.Text = "---";
             this.out_1_6.UseVisualStyleBackColor = true;
+            this.out_1_6.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_7
             // 
@@ -550,6 +569,7 @@
             this.out_1_7.TabIndex = 16;
             this.out_1_7.Text = "---";
             this.out_1_7.UseVisualStyleBackColor = true;
+            this.out_1_7.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_5
             // 
@@ -559,6 +579,7 @@
             this.out_1_5.TabIndex = 15;
             this.out_1_5.Text = "---";
             this.out_1_5.UseVisualStyleBackColor = true;
+            this.out_1_5.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_4
             // 
@@ -568,6 +589,7 @@
             this.out_1_4.TabIndex = 14;
             this.out_1_4.Text = "---";
             this.out_1_4.UseVisualStyleBackColor = true;
+            this.out_1_4.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_2
             // 
@@ -577,6 +599,7 @@
             this.out_1_2.TabIndex = 13;
             this.out_1_2.Text = "---";
             this.out_1_2.UseVisualStyleBackColor = true;
+            this.out_1_2.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_3
             // 
@@ -586,6 +609,7 @@
             this.out_1_3.TabIndex = 12;
             this.out_1_3.Text = "---";
             this.out_1_3.UseVisualStyleBackColor = true;
+            this.out_1_3.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // out_1_1
             // 
@@ -595,6 +619,7 @@
             this.out_1_1.TabIndex = 11;
             this.out_1_1.Text = "---";
             this.out_1_1.UseVisualStyleBackColor = true;
+            this.out_1_1.Click += new System.EventHandler(this.on_btn_out_click);
             // 
             // label6
             // 
@@ -641,6 +666,26 @@
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(366, 117);
             this.panel9.TabIndex = 16;
+            // 
+            // in_1_6
+            // 
+            this.in_1_6.Enabled = false;
+            this.in_1_6.Location = new System.Drawing.Point(186, 85);
+            this.in_1_6.Name = "in_1_6";
+            this.in_1_6.Size = new System.Drawing.Size(48, 23);
+            this.in_1_6.TabIndex = 16;
+            this.in_1_6.Text = "---";
+            this.in_1_6.UseVisualStyleBackColor = true;
+            // 
+            // in_1_5
+            // 
+            this.in_1_5.Enabled = false;
+            this.in_1_5.Location = new System.Drawing.Point(12, 85);
+            this.in_1_5.Name = "in_1_5";
+            this.in_1_5.Size = new System.Drawing.Size(48, 23);
+            this.in_1_5.TabIndex = 15;
+            this.in_1_5.Text = "---";
+            this.in_1_5.UseVisualStyleBackColor = true;
             // 
             // in_1_4
             // 
@@ -707,6 +752,26 @@
             this.panel10.Size = new System.Drawing.Size(361, 117);
             this.panel10.TabIndex = 15;
             // 
+            // in_2_6
+            // 
+            this.in_2_6.Enabled = false;
+            this.in_2_6.Location = new System.Drawing.Point(186, 85);
+            this.in_2_6.Name = "in_2_6";
+            this.in_2_6.Size = new System.Drawing.Size(48, 23);
+            this.in_2_6.TabIndex = 16;
+            this.in_2_6.Text = "---";
+            this.in_2_6.UseVisualStyleBackColor = true;
+            // 
+            // in_2_5
+            // 
+            this.in_2_5.Enabled = false;
+            this.in_2_5.Location = new System.Drawing.Point(12, 85);
+            this.in_2_5.Name = "in_2_5";
+            this.in_2_5.Size = new System.Drawing.Size(48, 23);
+            this.in_2_5.TabIndex = 15;
+            this.in_2_5.Text = "---";
+            this.in_2_5.UseVisualStyleBackColor = true;
+            // 
             // in_2_4
             // 
             this.in_2_4.Enabled = false;
@@ -767,51 +832,22 @@
             this.label11.TabIndex = 5;
             this.label11.Text = "Состояние входов";
             // 
-            // in_1_6
+            // button1
             // 
-            this.in_1_6.Enabled = false;
-            this.in_1_6.Location = new System.Drawing.Point(186, 85);
-            this.in_1_6.Name = "in_1_6";
-            this.in_1_6.Size = new System.Drawing.Size(48, 23);
-            this.in_1_6.TabIndex = 16;
-            this.in_1_6.Text = "---";
-            this.in_1_6.UseVisualStyleBackColor = true;
-            // 
-            // in_1_5
-            // 
-            this.in_1_5.Enabled = false;
-            this.in_1_5.Location = new System.Drawing.Point(12, 85);
-            this.in_1_5.Name = "in_1_5";
-            this.in_1_5.Size = new System.Drawing.Size(48, 23);
-            this.in_1_5.TabIndex = 15;
-            this.in_1_5.Text = "---";
-            this.in_1_5.UseVisualStyleBackColor = true;
-            // 
-            // in_2_6
-            // 
-            this.in_2_6.Enabled = false;
-            this.in_2_6.Location = new System.Drawing.Point(186, 85);
-            this.in_2_6.Name = "in_2_6";
-            this.in_2_6.Size = new System.Drawing.Size(48, 23);
-            this.in_2_6.TabIndex = 16;
-            this.in_2_6.Text = "---";
-            this.in_2_6.UseVisualStyleBackColor = true;
-            // 
-            // in_2_5
-            // 
-            this.in_2_5.Enabled = false;
-            this.in_2_5.Location = new System.Drawing.Point(12, 85);
-            this.in_2_5.Name = "in_2_5";
-            this.in_2_5.Size = new System.Drawing.Size(48, 23);
-            this.in_2_5.TabIndex = 15;
-            this.in_2_5.Text = "---";
-            this.in_2_5.UseVisualStyleBackColor = true;
+            this.button1.Location = new System.Drawing.Point(778, 35);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(151, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 741);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel2);
@@ -913,6 +949,7 @@
         private System.Windows.Forms.Button in_2_1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button button1;
     }
 }
 

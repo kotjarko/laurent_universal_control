@@ -11,6 +11,7 @@ namespace Laurent_control_app
         private TelnetConnection tc;
 
         public bool connected = false;
+        public bool alive = false;
         // -1 неизвестно
         // 1 высокий\включено
         // 0 низкий\выключено
@@ -29,26 +30,35 @@ namespace Laurent_control_app
             if (tc.IsConnected)
             {
                 connected = true;
+                alive = check_controller();
                 return true;
             }
             return false;
         }
 
-        // $KE
+        public void request_changes()
+        {
+            alive = check_controller();
+            check_output();
+        }
         // return true if OK
-        public bool check_controller()
+        private bool check_controller()
         {
             tc.WriteLine("$KE");
-            // TODO check #OK
-            return true;
+            string reply = tc.Read();
+            if (reply.Trim() == "#OK") return true;
+            return false;
         }
 
-        // $KE,WR,<OutLine>,<Value>
-        // pin==0 - to all pins, 1..6 - to pin
+        //-----------------------------------//
+        //              OUTPUTS
+        //-----------------------------------//
+        // pin==0 - to all pins, 1..12 - to pin
         // value = 0 | 1
         // return true if OK
         public bool set_output(short pin, short state)
         {
+            // $KE,WR,<OutLine>,<Value>
             string pin_str = "";
             string state_str = "";
 
@@ -65,18 +75,51 @@ namespace Laurent_control_app
             }
 
             tc.WriteLine("$KE,WR," + pin_str + "," + state_str);
-            // TODO check #WR,OK
-            return true;
-        }
 
-        // $KE,WRA,<ArrayOfValues>
-        //
-        // return true if OK
+            string reply = tc.Read();
+            if ((pin == 0) && (reply.Trim() == "#WR,ALL,OK"))
+            {
+                for(int i = 0; i<laurent_out.Length; i++)
+                {
+                    laurent_out[i] = state;
+                }
+                return true;
+            }
+            else if ((pin != 0) && (reply.Trim() == "#WR,OK"))
+            {
+                laurent_out[pin - 1] = state;
+                return true;
+            }
+            return false;
+        }
+        // TODO or REMOVE
         public bool set_output_array()
         {
-            tc.WriteLine("$KE");
-            // TODO check #OK
+            // $KE,WRA,<ArrayOfValues>
+            //
+            // return true if OK
             return true;
+        }
+        // return true if OK
+        public bool check_output()
+        {
+            // запрос: $KE,RID,ALL 
+            // ответ: #RID,011001000000 
+            tc.WriteLine("$KE,RID,ALL");
+            string reply = tc.Read();
+            reply = reply.Trim();
+            if (reply.Substring(0, 5) == "#RID,")
+            {
+                reply = reply.Substring(5, 12);
+                for(int i = 0; i<12; i++)
+                {
+                    if (reply[i] == '0') laurent_out[i] = 0;
+                    else if (reply[i] == '1') laurent_out[i] = 1;
+                    // TODO else error
+                }
+                return true;
+            }
+            return false;
         }
     }
 }

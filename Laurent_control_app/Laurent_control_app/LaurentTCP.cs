@@ -40,6 +40,10 @@ namespace Laurent_control_app
         {
             alive = check_controller();
             check_output();
+            check_relay(1);
+            check_relay(2);
+            check_relay(3);
+            check_relay(4);
         }
         // return true if OK
         private bool check_controller()
@@ -121,5 +125,42 @@ namespace Laurent_control_app
             }
             return false;
         }
+
+        //-----------------------------------//
+        //              RELAYS
+        //-----------------------------------//
+        public void set_relay(short relay, short state)
+        {
+            //  $KE,REL,<ReleNumber>,<Value> 
+            //  #REL,OK  –  значение успешно установлено.
+            tc.WriteLine("$KE,REL," + relay.ToString() + "," + state.ToString());
+        }
+        public bool check_relay(int num)
+        {
+            tc.WriteLine("$KE,RDR," + num.ToString());
+            // запрос: Синтаксис:  $KE,RDR,<ReleNumber>
+            // #RDR,<ReleNumber>,<State> 
+
+            string reply = tc.Read();
+            reply = reply.Trim();
+            string check_str = "#RDR," + num.ToString();
+            if (reply.Substring(0, 6) == check_str.Trim())
+            {
+                if(reply.Substring(7, 1) == "1")
+                {
+                    laurent_relay[num - 1] = 1;
+                    return true;
+                }
+                else if (reply.Substring(7, 1) == "0")
+                {
+                    laurent_relay[num - 1] = 0;
+                    return true;
+                }
+            }
+            return false;
+        }
+        //-----------------------------------//
+        //              INPUTS
+        //-----------------------------------//
     }
 }

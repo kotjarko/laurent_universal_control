@@ -840,7 +840,7 @@
             this.button1.TabIndex = 10;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
             // 
             // Form1
             // 
@@ -854,6 +854,7 @@
             this.Controls.Add(this.panel1);
             this.Name = "Form1";
             this.Text = "Управление квестом \"Боги Египта\"";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

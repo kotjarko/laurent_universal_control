@@ -35,13 +35,13 @@ namespace Laurent_control_app
         private void button1_Click(object sender, EventArgs e)
         {
             if (!controller_1.connected) controller_1.connect("192.168.0.101", 2424);
-            check_1 = new Status_Check();
+            check_1 = new Status_Check(controller_1);
             thread_check_1 = new Thread(check_1.DoWork);
             thread_check_1.Start();
             /* if (!controller_2.connected) controller_2.connect("192.168.0.102", 2424); // TODO
-            workerObject = new Class1();
-            workerThread = new Thread(workerObject.DoWork);
-            workerThread.Start();
+            check_2 = new Status_Check(controller_2);
+            thread_check_2 = new Thread(check_2.DoWork);
+            thread_check_2.Start();
             */
         }
 
@@ -50,9 +50,9 @@ namespace Laurent_control_app
             // Кнопка связи
             if (controller_1.connected && controller_2.connected) btn_connect.Enabled = false;
             else btn_connect.Enabled = true;
-            // Запрос изменения состояния
-            if (controller_1.connected) controller_1.request_changes();
-            if (controller_2.connected) controller_2.request_changes();
+            // Запрос изменения состояния - вынесено в отдельный поток
+            //if (controller_1.connected) controller_1.request_changes();
+            //if (controller_2.connected) controller_2.request_changes();
             // Связь с 1 контроллером
             if (controller_1.alive)
             {
@@ -159,22 +159,6 @@ namespace Laurent_control_app
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            int val = check_1.get_arr(1);
-            button1.Text = val.ToString();
-        }
-
-        private void on_btn_out_click(int controller, int num)
-        {
-            // if (controller_1.alive)
-        }
-
-        private void out_1_1_Click(object sender, EventArgs e)
-        {
-            on_btn_out_click(1, 1);
-        }
-
         private void on_btn_out_click(object sender, EventArgs e)
         {
             var button = sender as Button;
@@ -196,43 +180,40 @@ namespace Laurent_control_app
                 // TODO else error
             }
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            check_1.RequestStop();
+            //check_2.RequestStop();
+        }
+
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            button1.Text = controller_1.check_relay(1).ToString();
+        }
     }
 
-    public class Status_Check
+    class Status_Check
     {
+        private volatile LaurentTCP controller;
+        private volatile bool _shouldStop;
+
+        public Status_Check(LaurentTCP _controller)
+        {
+            controller = _controller;
+        }
         public void DoWork()
         {
             while (!_shouldStop)
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    Random rnd = new Random();
-                    arr[i] = rnd.Next(0, 9);
-                }
+                controller.request_changes();
             }
-            arr[0] = -1;
-            arr[1] = -1;
-            arr[2] = -1;
-            arr[3] = -1;
-            arr[4] = -1;
-            arr[5] = -1;
-            arr[6] = -1;
-            arr[7] = -1;
-            arr[8] = -1;
-            arr[9] = -1;
         }
 
         public void RequestStop()
         {
             _shouldStop = true;
         }
-
-        public int get_arr(int num)
-        {
-            return arr[num];
-        }
-
-        private volatile bool _shouldStop;
-        private volatile int[] arr = new int[10];
     }
 }

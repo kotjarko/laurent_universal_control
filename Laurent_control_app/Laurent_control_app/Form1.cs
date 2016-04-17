@@ -38,6 +38,7 @@ namespace Laurent_control_app
             check_1 = new Status_Check(controller_1);
             thread_check_1 = new Thread(check_1.DoWork);
             thread_check_1.Start();
+
             /* if (!controller_2.connected) controller_2.connect("192.168.0.102", 2424); // TODO
             check_2 = new Status_Check(controller_2);
             thread_check_2 = new Thread(check_2.DoWork);
@@ -45,7 +46,7 @@ namespace Laurent_control_app
             */
         }
 
-        private async void timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
             // Кнопка связи
             if (controller_1.connected && controller_2.connected) btn_connect.Enabled = false;
@@ -169,13 +170,35 @@ namespace Laurent_control_app
 
                 if (button.Name.Split('_')[1] == "1")
                 {
-                    if (controller_1.laurent_out[pin] == 0) state = 1;
+                    if (controller_1.laurent_out[pin - 1] == 0) state = 1;
                     controller_1.set_output(pin, state);
                 }
                 else if (button.Name.Split('_')[1] == "1")
                 {
-                    if (controller_1.laurent_out[pin] == 0) state = 1;
+                    if (controller_1.laurent_out[pin - 1] == 0) state = 1;
                     controller_1.set_output(pin, state);
+                }
+                // TODO else error
+            }
+        }
+
+        private void on_btn_relay_click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button != null)
+            {
+                short pin = short.Parse(button.Name.Split('_')[2]);
+                short state = 0;
+
+                if (button.Name.Split('_')[1] == "1")
+                {
+                    if (controller_1.laurent_relay[pin - 1] == 0) state = 1;
+                    controller_1.set_relay(pin, state);
+                }
+                else if (button.Name.Split('_')[1] == "1")
+                {
+                    if (controller_1.laurent_relay[pin - 1] == 0) state = 1;
+                    controller_1.set_relay(pin, state);
                 }
                 // TODO else error
             }
@@ -190,7 +213,7 @@ namespace Laurent_control_app
 
         private void button1_Click_2(object sender, EventArgs e)
         {
-            button1.Text = controller_1.check_relay(1).ToString();
+            //button1.Text = controller_1.check_input();
         }
     }
 

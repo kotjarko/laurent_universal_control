@@ -40,6 +40,7 @@ namespace Laurent_control_app
         {
             alive = check_controller();
             check_output();
+            check_input();
             check_relay(1);
             check_relay(2);
             check_relay(3);
@@ -162,5 +163,25 @@ namespace Laurent_control_app
         //-----------------------------------//
         //              INPUTS
         //-----------------------------------//
+        public bool check_input()
+        {
+            // запрос: $KE,RD,ALL 
+            // ответ: #RD,011001000000 
+            tc.WriteLine("$KE,RD,ALL");
+            string reply = tc.Read();
+            reply = reply.Trim();
+            if (reply.Substring(0, 4) == "#RD,")
+            {
+                reply = reply.Substring(4, 6);
+                for (int i = 0; i < 6; i++)
+                {
+                    if (reply[i] == '0') laurent_in[i] = 0;
+                    else if (reply[i] == '1') laurent_in[i] = 1;
+                    // TODO else error
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }

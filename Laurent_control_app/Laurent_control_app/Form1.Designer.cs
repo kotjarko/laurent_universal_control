@@ -211,6 +211,7 @@
             this.relay_1_4.TabIndex = 14;
             this.relay_1_4.Text = "---";
             this.relay_1_4.UseVisualStyleBackColor = true;
+            this.relay_1_4.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // relay_1_2
             // 
@@ -220,6 +221,7 @@
             this.relay_1_2.TabIndex = 13;
             this.relay_1_2.Text = "---";
             this.relay_1_2.UseVisualStyleBackColor = true;
+            this.relay_1_2.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // relay_1_3
             // 
@@ -229,6 +231,7 @@
             this.relay_1_3.TabIndex = 12;
             this.relay_1_3.Text = "---";
             this.relay_1_3.UseVisualStyleBackColor = true;
+            this.relay_1_3.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // relay_1_1
             // 
@@ -238,6 +241,7 @@
             this.relay_1_1.TabIndex = 11;
             this.relay_1_1.Text = "---";
             this.relay_1_1.UseVisualStyleBackColor = true;
+            this.relay_1_1.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // label5
             // 
@@ -270,6 +274,7 @@
             this.relay_2_4.TabIndex = 14;
             this.relay_2_4.Text = "---";
             this.relay_2_4.UseVisualStyleBackColor = true;
+            this.relay_2_4.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // relay_2_2
             // 
@@ -279,6 +284,7 @@
             this.relay_2_2.TabIndex = 13;
             this.relay_2_2.Text = "---";
             this.relay_2_2.UseVisualStyleBackColor = true;
+            this.relay_2_2.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // relay_2_3
             // 
@@ -288,6 +294,7 @@
             this.relay_2_3.TabIndex = 12;
             this.relay_2_3.Text = "---";
             this.relay_2_3.UseVisualStyleBackColor = true;
+            this.relay_2_3.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // relay_2_1
             // 
@@ -297,6 +304,7 @@
             this.relay_2_1.TabIndex = 11;
             this.relay_2_1.Text = "---";
             this.relay_2_1.UseVisualStyleBackColor = true;
+            this.relay_2_1.Click += new System.EventHandler(this.on_btn_relay_click);
             // 
             // label4
             // 

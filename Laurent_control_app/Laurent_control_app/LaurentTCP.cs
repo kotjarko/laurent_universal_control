@@ -18,7 +18,7 @@ namespace Laurent_control_app
         public short[] laurent_relay = { -1, -1, -1, -1 };
         public short[] laurent_out = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
         public short[] laurent_in = { -1, -1, -1, -1, -1, -1 };
-
+        public float[] laurent_adc = { -1, -1 };
         public LaurentTCP()
         {
             // TODO construct
@@ -36,15 +36,87 @@ namespace Laurent_control_app
             return false;
         }
 
+        private void check_read()
+        {
+            string str_in = tc.Read();
+            str_in = str_in.Trim();
+
+            string[] replies = str_in.Split('\n');
+            foreach (string reply_item in replies)
+            {
+                string reply = "";
+                reply_item.Trim();
+                // outputs
+                if ((reply_item.Length > 3) && (reply_item.Substring(0, 4) == "#RD,"))
+                {
+                    reply = reply_item.Substring(4, 6);
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (reply[i] == '0') laurent_in[i] = 0;
+                        else if (reply[i] == '1') laurent_in[i] = 1;
+                    }
+                    return;
+                }
+                // inputs
+                else if ((reply_item.Length > 4) && (reply_item.Substring(0, 5) == "#RID,"))
+                {
+                    reply = reply_item.Substring(5, 12);
+                    for (int i = 0; i < 12; i++)
+                    {
+                        if (reply[i] == '0') laurent_out[i] = 0;
+                        else if (reply[i] == '1') laurent_out[i] = 1;
+                    }
+                }
+                // relay
+                if ((reply_item.Length > 4) && (reply_item.Substring(0, 5) == "#RDR,"))
+                {
+                    int num = int.Parse(reply_item.Substring(5, 1));
+
+                    if (reply_item.Substring(7, 1) == "1")
+                    {
+                        laurent_relay[num - 1] = 1;
+                    }
+                    else if (reply_item.Substring(7, 1) == "0")
+                    {
+                        laurent_relay[num - 1] = 0;
+                    }
+                }
+                // adc
+                if ((reply_item.Length > 4) && (reply_item.Substring(0, 5) == "#ADC,"))
+                {
+                    int num = int.Parse(reply_item.Substring(5, 1));
+                    string str_val = reply_item.Substring(7, 5);
+                    str_val = str_val.Replace('.', ',');
+                    float val = float.Parse(str_val);
+                    laurent_adc[num - 1] = val;
+                }
+                /////////////////
+            }
+        }
+
+        public void check_relay() {
+            check_relay(1);
+            check_read();
+            check_relay(2);
+            check_read();
+            check_relay(3);
+            check_read();
+            check_relay(4);
+        }
+
         public void request_changes()
         {
-            //alive = check_controller();
-            //check_output();
-            //check_input();
-            // check_relay(1);
-            // check_relay(2);
-            // check_relay(3);
-            // check_relay(4);
+            if (!alive) alive = check_controller();
+            else
+            {
+                check_output();
+                check_read();
+                check_input();
+                check_read();
+                check_adc(1);
+                check_adc(2);
+                check_relay();
+            }
         }
         // return true if OK
         private bool check_controller()
@@ -61,7 +133,7 @@ namespace Laurent_control_app
         // pin==0 - to all pins, 1..12 - to pin
         // value = 0 | 1
         // return true if OK
-        public bool set_output(short pin, short state)
+        public void set_output(short pin, short state)
         {
             // $KE,WR,<OutLine>,<Value>
             string pin_str = "";
@@ -80,51 +152,13 @@ namespace Laurent_control_app
             }
 
             tc.WriteLine("$KE,WR," + pin_str + "," + state_str);
-
-            string reply = tc.Read();
-            if ((pin == 0) && (reply.Trim() == "#WR,ALL,OK"))
-            {
-                for(int i = 0; i<laurent_out.Length; i++)
-                {
-                    laurent_out[i] = state;
-                }
-                return true;
-            }
-            else if ((pin != 0) && (reply.Trim() == "#WR,OK"))
-            {
-                laurent_out[pin - 1] = state;
-                return true;
-            }
-            return false;
-        }
-        // TODO or REMOVE
-        public bool set_output_array()
-        {
-            // $KE,WRA,<ArrayOfValues>
-            //
-            // return true if OK
-            return true;
         }
         // return true if OK
-        public bool check_output()
+        public void check_output()
         {
             // запрос: $KE,RID,ALL 
             // ответ: #RID,011001000000 
             tc.WriteLine("$KE,RID,ALL");
-            string reply = tc.Read();
-            reply = reply.Trim();
-            if (reply.Substring(0, 5) == "#RID,")
-            {
-                reply = reply.Substring(5, 12);
-                for(int i = 0; i<12; i++)
-                {
-                    if (reply[i] == '0') laurent_out[i] = 0;
-                    else if (reply[i] == '1') laurent_out[i] = 1;
-                    // TODO else error
-                }
-                return true;
-            }
-            return false;
         }
 
         //-----------------------------------//
@@ -136,77 +170,29 @@ namespace Laurent_control_app
             //  #REL,OK  –  значение успешно установлено.
             tc.WriteLine("$KE,REL," + relay.ToString() + "," + state.ToString());
         }
-        public bool check_relay(int num)
+        public void check_relay(int num)
         {
             tc.WriteLine("$KE,RDR," + num.ToString());
             // запрос: Синтаксис:  $KE,RDR,<ReleNumber>
             // #RDR,<ReleNumber>,<State> 
-
-            string reply = tc.Read();
-            reply = reply.Trim();
-            string check_str = "#RDR," + num.ToString();
-            if (reply.Substring(0, 6) == check_str.Trim())
-            {
-                if(reply.Substring(7, 1) == "1")
-                {
-                    laurent_relay[num - 1] = 1;
-                    return true;
-                }
-                else if (reply.Substring(7, 1) == "0")
-                {
-                    laurent_relay[num - 1] = 0;
-                    return true;
-                }
-            }
-            return false;
         }
         //-----------------------------------//
         //              INPUTS
         //-----------------------------------//
-        public bool check_input()
+        public void check_input()
         {
             // запрос: $KE,RD,ALL 
             // ответ: #RD,011001000000 
             tc.WriteLine("$KE,RD,ALL");
-            string reply = tc.Read();
-            reply = reply.Trim();
-            if (reply.Substring(0, 4) == "#RD,")
-            {
-                reply = reply.Substring(4, 6);
-                for (int i = 0; i < 6; i++)
-                {
-                    if (reply[i] == '0') laurent_in[i] = 0;
-                    else if (reply[i] == '1') laurent_in[i] = 1;
-                    // TODO else error
-                }
-                return true;
-            }
-            return false;
         }
         //-----------------------------------//
         //              ADCs
         //-----------------------------------//
-        public string check_adc(int num)
+        public void check_adc(int num)
         {
             //запрос: $KE,ADC,1
             //ответ: #ADC,3,7.418
             tc.WriteLine("$KE,ADC,"+num.ToString());
-            string reply = tc.Read();
-            reply = reply.Trim();
-            return reply;
-            /*
-            if (reply.Substring(0, 4) == "#RD,")
-            {
-                reply = reply.Substring(4, 6);
-                for (int i = 0; i < 6; i++)
-                {
-                    if (reply[i] == '0') laurent_in[i] = 0;
-                    else if (reply[i] == '1') laurent_in[i] = 1;
-                    // TODO else error
-                }
-                return true;
-            }
-            return false;*/
         }
     }
 }

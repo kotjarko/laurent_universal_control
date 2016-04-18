@@ -131,6 +131,12 @@ namespace Laurent_control_app
             set_relay_out_btn(in_2_4, controller_2.laurent_in[3], "in");
             set_relay_out_btn(in_2_5, controller_2.laurent_in[4], "in");
             set_relay_out_btn(in_2_6, controller_2.laurent_in[5], "in");
+            // Контроллер 1 - АЦП
+            if (controller_1.laurent_adc[0] != -1) adc_1_1.Text = "АЦП 1: " + controller_1.laurent_adc[0].ToString("0.000");
+            if (controller_1.laurent_adc[1] != -1) adc_1_2.Text = "АЦП 2: " + controller_1.laurent_adc[1].ToString("0.000");
+            // Контроллер 2 - АЦП
+            if (controller_2.laurent_adc[0] != -1) adc_2_1.Text = "АЦП 1: " + controller_2.laurent_adc[0].ToString("0.000");
+            if (controller_2.laurent_adc[1] != -1) adc_2_2.Text = "АЦП 2: " + controller_2.laurent_adc[1].ToString("0.000");
         }
 
         private void set_relay_out_btn(Button button, short state, string type)
@@ -213,7 +219,12 @@ namespace Laurent_control_app
 
         private void button1_Click_2(object sender, EventArgs e)
         {
-            button1.Text = controller_1.check_adc(1);
+            // button1.Text = controller_1.check_adc(1);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.Text = Application.ExecutablePath;
         }
     }
 

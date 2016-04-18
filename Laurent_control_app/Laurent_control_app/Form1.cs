@@ -212,8 +212,8 @@ namespace Laurent_control_app
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            check_1.RequestStop();
-            //check_2.RequestStop();
+            if (controller_1.connected) check_1.RequestStop();
+            if (controller_2.connected) check_2.RequestStop();
         }
 
 
@@ -224,7 +224,22 @@ namespace Laurent_control_app
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Text = Application.ExecutablePath;
+            string filename = Path.GetDirectoryName(Application.ExecutablePath) + "\\captions.txt";
+            // label16..label59
+            int counter = 16;
+            string line;
+            if(File.Exists(filename)) { 
+                System.IO.StreamReader file = new System.IO.StreamReader(@filename);
+                while ((line = file.ReadLine()) != null)
+                {
+                    //System.Console.WriteLine(line);
+                    Label lbl = this.Controls.Find("Label" + counter.ToString(), true).FirstOrDefault() as Label;
+                    lbl.Text = line;
+                    counter++;
+                }
+
+                file.Close();
+            }
         }
     }
 

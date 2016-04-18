@@ -213,7 +213,7 @@ namespace Laurent_control_app
 
         private void button1_Click_2(object sender, EventArgs e)
         {
-            //button1.Text = controller_1.check_input();
+            button1.Text = controller_1.check_adc(1);
         }
     }
 

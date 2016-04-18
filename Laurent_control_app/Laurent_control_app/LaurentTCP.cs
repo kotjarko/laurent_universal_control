@@ -38,13 +38,13 @@ namespace Laurent_control_app
 
         public void request_changes()
         {
-            alive = check_controller();
-            check_output();
-            check_input();
-            check_relay(1);
-            check_relay(2);
-            check_relay(3);
-            check_relay(4);
+            //alive = check_controller();
+            //check_output();
+            //check_input();
+            // check_relay(1);
+            // check_relay(2);
+            // check_relay(3);
+            // check_relay(4);
         }
         // return true if OK
         private bool check_controller()
@@ -182,6 +182,31 @@ namespace Laurent_control_app
                 return true;
             }
             return false;
+        }
+        //-----------------------------------//
+        //              ADCs
+        //-----------------------------------//
+        public string check_adc(int num)
+        {
+            //запрос: $KE,ADC,1
+            //ответ: #ADC,3,7.418
+            tc.WriteLine("$KE,ADC,"+num.ToString());
+            string reply = tc.Read();
+            reply = reply.Trim();
+            return reply;
+            /*
+            if (reply.Substring(0, 4) == "#RD,")
+            {
+                reply = reply.Substring(4, 6);
+                for (int i = 0; i < 6; i++)
+                {
+                    if (reply[i] == '0') laurent_in[i] = 0;
+                    else if (reply[i] == '1') laurent_in[i] = 1;
+                    // TODO else error
+                }
+                return true;
+            }
+            return false;*/
         }
     }
 }

@@ -11,6 +11,8 @@ using System.Net.Sockets;
 using System.IO;
 using System.Threading;
 using System.Net;
+using System.Media;
+using WMPLib;
 
 namespace Laurent_control_app
 {
@@ -24,6 +26,15 @@ namespace Laurent_control_app
 
         Thread thread_check_1;
         Thread thread_check_2;
+
+        //SoundPlayer sound_background;
+        //SoundPlayer sound_action;
+
+        WindowsMediaPlayer sound_background = new WindowsMediaPlayer();
+        WindowsMediaPlayer sound_action = new WindowsMediaPlayer();
+
+        // 0 - no, 1 - 1 stop, 2 - 1 play, 3 - 2 stop. 4 - 2 play
+        short background_status = 0;
 
         public Form1()
         {
@@ -139,9 +150,37 @@ namespace Laurent_control_app
             if (controller_2.laurent_adc[1] != -1) adc_2_2.Text = "АЦП 2: " + controller_2.laurent_adc[1].ToString("0.000");
         }
 
+        private string get_action_sound(int input)
+        {
+            string filename = Path.GetDirectoryName(Application.ExecutablePath) + "\\sounds.txt";
+            int counter = 1;
+
+            string result = "";
+            string line;
+            if (File.Exists(filename))
+            {
+                System.IO.StreamReader file = new System.IO.StreamReader(@filename);
+                while ((line = file.ReadLine()) != null)
+                {
+                    if(counter == input)
+                    {
+                        // button.Name.Split('_')[1] == "2"
+                        line = line.Trim();
+                        result = line.Split('|')[1];
+                        break;
+                    }
+                    counter++;
+                }
+                file.Close();
+            }
+            return result;
+
+        }
+
         private void set_relay_out_btn(Button button, short state, string type)
         {
-            switch(state)
+            short last_state = -1;
+            switch (state)
             {
                 case -1:
                     if (type!="in") button.Enabled = false;
@@ -150,12 +189,18 @@ namespace Laurent_control_app
                     break;
                 case 0:
                     if (type != "in") button.Enabled = true;
+
+                    if (button.BackColor == Color.Green) last_state = 1; 
+
                     button.BackColor = Color.LightCoral;
                     if (type == "relay") button.Text = "Выкл";
                     else button.Text = "0";
                     break;
                 case 1:
                     if (type != "in") button.Enabled = true;
+
+                    if (button.BackColor == Color.LightCoral) last_state = 0;
+
                     button.BackColor = Color.Green;
                     if (type == "relay") button.Text = "Вкл";
                     else button.Text = "1";
@@ -163,6 +208,18 @@ namespace Laurent_control_app
                 default: 
                     // TODO ERROR
                     break;
+            }
+            if ((type == "in") && (last_state == 0) && (state == 1))
+            {
+                if (button != null)
+                {
+                    int sound_num = 0;
+                    if (button.Name.Split('_')[1] == "2") sound_num = 6;
+                    int pin = short.Parse(button.Name.Split('_')[2]);
+                    sound_num += pin;
+                    string sound = get_action_sound(sound_num);
+                    if(sound!="") load_sound(sound_action, sound);
+                }
             }
         }
 
@@ -179,10 +236,10 @@ namespace Laurent_control_app
                     if (controller_1.laurent_out[pin - 1] == 0) state = 1;
                     controller_1.set_output(pin, state);
                 }
-                else if (button.Name.Split('_')[1] == "1")
+                else if (button.Name.Split('_')[1] == "2")
                 {
-                    if (controller_1.laurent_out[pin - 1] == 0) state = 1;
-                    controller_1.set_output(pin, state);
+                    if (controller_2.laurent_out[pin - 1] == 0) state = 1;
+                    controller_2.set_output(pin, state);
                 }
                 // TODO else error
             }
@@ -216,12 +273,6 @@ namespace Laurent_control_app
             if (controller_2.connected) check_2.RequestStop();
         }
 
-
-        private void button1_Click_2(object sender, EventArgs e)
-        {
-            // button1.Text = controller_1.check_adc(1);
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             string filename = Path.GetDirectoryName(Application.ExecutablePath) + "\\captions.txt";
@@ -239,6 +290,58 @@ namespace Laurent_control_app
                 }
 
                 file.Close();
+            }
+        }
+
+        private bool load_sound(WindowsMediaPlayer player, string filename)
+        {
+            filename = Path.GetDirectoryName(Application.ExecutablePath) + "\\sounds\\" + filename;
+            if (File.Exists(filename))
+            {
+                //player = new SoundPlayer(@filename);
+                player.URL = filename;
+                return true;
+            }
+            return false;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button5.BackColor = Color.Gray;
+            if (background_status != 2)
+            {
+                if (load_sound(sound_background, "background_music.mp3"))
+                {
+                    background_status = 2;
+                    sound_background.controls.play();
+                    button4.BackColor = Color.LightGreen;
+                }
+            }
+            else
+            {
+                sound_background.controls.pause();
+                background_status = 1;
+                button4.BackColor = Color.Gray;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            button4.BackColor = Color.Gray;
+            if (background_status != 4)
+            {
+                if (load_sound(sound_background, "background_music_2.mp3"))
+                {
+                    background_status = 4;
+                    sound_background.controls.play();
+                    button5.BackColor = Color.LightGreen;
+                }
+            }
+            else
+            {
+                sound_background.controls.pause();
+                background_status = 3;
+                button5.BackColor = Color.Gray;
             }
         }
     }
